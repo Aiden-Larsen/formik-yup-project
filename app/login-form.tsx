@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import {
   ActivityIndicator,
   Pressable,
+  StyleSheet,
   Text,
   TextInput,
   View,
@@ -51,6 +52,7 @@ export default function LoginForm() {
         handleBlur,
         handleSubmit,
         isSubmitting,
+        isValid,
         status,
       }) => (
         <View>
@@ -69,20 +71,22 @@ export default function LoginForm() {
           <FormErrorNote message={touched.email ? errors.email : undefined} />
 
           <Text>Password</Text>
-          <View style={{ flex: 1, flexDirection: "row", maxHeight: 40 }}>
-            <TextInput
-              style={{ borderWidth: 1, maxWidth: 200 }}
-              value={values.password}
-              secureTextEntry
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-            />
-          </View>
+          <TextInput
+            style={{ borderWidth: 1, maxWidth: 200 }}
+            value={values.password}
+            secureTextEntry
+            onChangeText={handleChange("password")}
+            onBlur={handleBlur("password")}
+          />
           <FormErrorNote
             message={touched.password ? errors.password : undefined}
           />
 
-          <Pressable onPress={() => handleSubmit()}>
+          <Pressable
+            onPress={() => handleSubmit()}
+            disabled={isSubmitting || !isValid}
+            style={[styles.button, !isValid && styles.disabled]}
+          >
             {isSubmitting ? <ActivityIndicator /> : <Text>Submit</Text>}
           </Pressable>
 
@@ -92,3 +96,14 @@ export default function LoginForm() {
     </Formik>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#006eff",
+    borderRadius: 5,
+    padding: 5,
+    maxWidth: 250,
+  },
+
+  disabled: { opacity: 0.6 },
+});

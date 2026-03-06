@@ -54,6 +54,7 @@ export default function SignUpForm() {
         handleBlur,
         handleSubmit,
         isSubmitting,
+        isValid,
       }) => (
         <View style={{ alignItems: "flex-start" }}>
           <Text>Name</Text>
@@ -98,9 +99,9 @@ export default function SignUpForm() {
           />
 
           <Pressable
-            style={styles.button}
+            style={[styles.button, !isValid && styles.disabled]}
             onPress={() => handleSubmit()}
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isValid}
           >
             {isSubmitting ? <ActivityIndicator /> : <Text>Create Account</Text>}
           </Pressable>
@@ -119,4 +120,6 @@ const styles = StyleSheet.create({
     padding: 5,
     maxWidth: 250,
   },
+
+  disabled: { opacity: 0.6 },
 });
